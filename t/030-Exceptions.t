@@ -4,7 +4,7 @@
 #
 # Cosimo 2007/02/05
 #
-# $Id: 030-Exceptions.t,v 1.1.1.1 2007/08/25 19:39:25 cosimo Exp $
+# $Id: 030-Exceptions.t,v 1.1 2007/02/09 10:46:49 cosimo Exp $
 
 use strict;
 use warnings;

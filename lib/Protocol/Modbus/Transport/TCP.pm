@@ -1,4 +1,4 @@
-# $Id: TCP.pm,v 1.2 2007/08/25 20:12:25 cosimo Exp $
+# $Id$
 
 package Protocol::Modbus::Transport::TCP;
 
@@ -71,7 +71,7 @@ sub receive
     $sock->recv(my $data, 100);
     #warn('Received: [' . unpack('H*', $data) . ']');
 
-    return(length($data), $data);
+    return($data);
 }
 
 sub disconnect
@@ -79,6 +79,7 @@ sub disconnect
     my $self = $_[0];
     my $sock = $self->{_handle};
     return unless $sock;
+	$self->{_handle} = undef;
     $sock->close();
 }
 

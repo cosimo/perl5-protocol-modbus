@@ -1,5 +1,8 @@
 Revision history for Perl extension Protocol::Modbus.
 
+0.05  Fri Dec 12 01:00:00 CET 2008
+    - Bug fix: properly delete socket handle when disconnecting
+
 0.04  Fri Feb 16 16:00:55 CET 2007
     - Added functions to read/write registers
     - More tests
