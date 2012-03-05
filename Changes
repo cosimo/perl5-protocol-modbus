@@ -1,5 +1,9 @@
 Revision history for Perl extension Protocol::Modbus.
 
+0.06  Mon Mar  5 10:05:56 CET 2012
+    - Fixed error in test code highlighted by CPAN testers report
+      http://www.cpantesters.org/cpan/report/902871d0-6594-11e1-9276-d80e49abe0af
+
 0.05  Fri Dec 12 01:00:00 CET 2008
     - Bug fix: properly delete socket handle when disconnecting
 
