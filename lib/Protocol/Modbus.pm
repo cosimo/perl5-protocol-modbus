@@ -1,5 +1,3 @@
-# $Id: Modbus.pm,v 1.9 2007/02/16 15:02:42 cosimo Exp $
-
 package Protocol::Modbus;
 
 use 5.006001;
@@ -13,9 +11,9 @@ use Protocol::Modbus::Exception;
 use Carp;
 
 #------------------------------------------------
-#         Modbus module version   
+#         Modbus module version
 #------------------------------------------------
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 #------------------------------------------------
 #         Modbus related CONSTANTS

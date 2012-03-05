@@ -1,4 +1,4 @@
-Protocol-Modbus version 0.05
+Protocol-Modbus version 0.06
 ============================
 
 Object-oriented class to abstract generation and parsing of Modbus
@@ -28,7 +28,7 @@ DEPENDENCIES
 
 COPYRIGHT AND LICENCE
 
-Copyright (C) 2007-2008 by Cosimo Streppone <cosimo@cpan.org>
+Copyright (C) 2007-2012 by Cosimo Streppone <cosimo@cpan.org>
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.8.8 or,
