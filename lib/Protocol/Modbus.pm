@@ -265,9 +265,8 @@ sub transaction
 
 sub transport
 {
-    my $self = $_[0];
-    if( @_ )
-    {
+    my $self = shift;
+    if (@_) {
         $self->{_options}->{transport} = $_[0];
     }
     return($self->{_options}->{transport});
