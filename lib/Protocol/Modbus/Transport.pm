@@ -4,61 +4,52 @@ use strict;
 use warnings;
 use Carp ();
 
-sub new
-{
-    my($obj, %args) = @_;
+sub new {
+    my ($obj, %args) = @_;
     my $class = ref($obj) || $obj;
-    my $self = {
-        _options => { %args },
-    };
+    my $self = {_options => {%args},};
 
     # If driver property specified, load "additional" modbus transport class (TCP / Serial)
-    if( exists $args{driver} && $args{driver} ne '' )
-    {
+    if (exists $args{driver} && $args{driver} ne '') {
         $class = "Protocol::Modbus::Transport::$args{driver}";
         eval "use $class";
-        if($@)
-        {
-            Carp::croak("Protocol::Modbus::Transport driver `$args{driver}' failed to load: $@");
-            return(undef);
+        if ($@) {
+            Carp::croak(
+                "Protocol::Modbus::Transport driver `$args{driver}' failed to load: $@");
+            return (undef);
         }
     }
+
     bless $self, $class;
 }
 
-sub options
-{   
+sub options {
     my $self = $_[0];
     return $self->{_options};
 }
 
 #
 # Transport virtual methods
-# 
-sub _virtual
-{
-    my($meth) = @_;
+#
+sub _virtual {
+    my ($meth) = @_;
     croak($meth . '() must be implemented by transport layer!');
     return undef;
 }
 
-sub connect
-{
+sub connect {
     _virtual('connect');
 }
 
-sub disconnect
-{
+sub disconnect {
     _virtual('disconnect');
 }
 
-sub send
-{
+sub send {
     _virtual('send');
 }
 
-sub receive
-{
+sub receive {
     _virtual('receive');
 }
 

@@ -13,44 +13,44 @@ use Carp;
 #------------------------------------------------
 #         Modbus module version
 #------------------------------------------------
-our $VERSION = '0.06';
+our $VERSION = '0.08';
 
 #------------------------------------------------
 #         Modbus related CONSTANTS
 #------------------------------------------------
 
 # Function codes
-use constant FUNC_READ_COILS            => 0x01;
-use constant FUNC_READ_INPUTS           => 0x02;
-use constant FUNC_READ_HOLD_REGISTERS   => 0x03;
-use constant FUNC_READ_INPUT_REGISTERS  => 0x04;
-use constant FUNC_WRITE_COIL            => 0x05;
-use constant FUNC_WRITE_REGISTER        => 0x06;
-use constant FUNC_READ_EXCEPTION_STATUS => 0x07;
-use constant FUNC_DIAGNOSTICS           => 0x08;
-use constant FUNC_GET_COMM_EVENT_COUNTER=> 0x0B;
-use constant FUNC_GET_COMM_EVENT_LOG    => 0x0C;
-use constant FUNC_WRITE_COILS           => 0x0F;
-use constant FUNC_WRITE_REGISTERS       => 0x10;
-use constant FUNC_REPORT_SLAVE_ID       => 0x11;
-use constant FUNC_READ_FILE_RECORD      => 0x1406;
-use constant FUNC_WRITE_FILE_RECORD     => 0x1506;
-use constant FUNC_MASK_WRITE_REGISTER   => 0x16;
-use constant FUNC_RW_MULTIPLE_REGISTERS => 0x17;
-use constant FUNC_READ_FIFO_QUEUE       => 0x18;
-use constant FUNC_CANOPEN_GEN_REFERENCE => 0x2B0D;
-use constant FUNC_READ_DEVICE_ID        => 0x2B0E;
+use constant FUNC_READ_COILS             => 0x01;
+use constant FUNC_READ_INPUTS            => 0x02;
+use constant FUNC_READ_HOLD_REGISTERS    => 0x03;
+use constant FUNC_READ_INPUT_REGISTERS   => 0x04;
+use constant FUNC_WRITE_COIL             => 0x05;
+use constant FUNC_WRITE_REGISTER         => 0x06;
+use constant FUNC_READ_EXCEPTION_STATUS  => 0x07;
+use constant FUNC_DIAGNOSTICS            => 0x08;
+use constant FUNC_GET_COMM_EVENT_COUNTER => 0x0B;
+use constant FUNC_GET_COMM_EVENT_LOG     => 0x0C;
+use constant FUNC_WRITE_COILS            => 0x0F;
+use constant FUNC_WRITE_REGISTERS        => 0x10;
+use constant FUNC_REPORT_SLAVE_ID        => 0x11;
+use constant FUNC_READ_FILE_RECORD       => 0x1406;
+use constant FUNC_WRITE_FILE_RECORD      => 0x1506;
+use constant FUNC_MASK_WRITE_REGISTER    => 0x16;
+use constant FUNC_RW_MULTIPLE_REGISTERS  => 0x17;
+use constant FUNC_READ_FIFO_QUEUE        => 0x18;
+use constant FUNC_CANOPEN_GEN_REFERENCE  => 0x2B0D;
+use constant FUNC_READ_DEVICE_ID         => 0x2B0E;
 
 # Parameter types
-use constant PARAM_ADDRESS              => 1;
-use constant PARAM_QUANTITY             => 2;
-use constant PARAM_VALUE                => 3;
-use constant PARAM_COUNT                => 4;
-use constant PARAM_OUTPUTS              => 5;
-use constant PARAM_MASK                 => 6;
-use constant PARAM_IS_LIST              => 8;
-use constant PARAM_OUTPUT_LIST          => 8;
-use constant PARAM_REGISTER_LIST        => 9;
+use constant PARAM_ADDRESS       => 1;
+use constant PARAM_QUANTITY      => 2;
+use constant PARAM_VALUE         => 3;
+use constant PARAM_COUNT         => 4;
+use constant PARAM_OUTPUTS       => 5;
+use constant PARAM_MASK          => 6;
+use constant PARAM_IS_LIST       => 8;
+use constant PARAM_OUTPUT_LIST   => 8;
+use constant PARAM_REGISTER_LIST => 9;
 
 # How parameters are managed
 #
@@ -58,38 +58,33 @@ use constant PARAM_REGISTER_LIST        => 9;
 # 'C' => Unsigned char     (8 bit)
 #
 use constant PARAM_SPEC => [
-    undef,                     # 0
-    [ 'address',  2, 'n' ],    # 1
-    [ 'quantity', 2, 'n' ],    # 2
-    [ 'value',    2, 'n' ],    # 3
-    [ 'count',    1, 'C' ],    # 4
-    [ 'outputs',  0, 'n*'],    # 5
-    [ 'mask',     2, 'n' ],    # 6
-    undef,                     # 7
-    [ 'outputs',  0, 'n*'],    # 8
-    [ 'registers',0, 'n*'],    # 9
+    undef,    # 0
+    ['address',  2, 'n'],     # 1
+    ['quantity', 2, 'n'],     # 2
+    ['value',    2, 'n'],     # 3
+    ['count',    1, 'C'],     # 4
+    ['outputs',  0, 'n*'],    # 5
+    ['mask',     2, 'n'],     # 6
+    undef,                    # 7
+    ['outputs',   0, 'n*'],   # 8
+    ['registers', 0, 'n*'],   # 9
 ];
 
 #
 # Class constructor
 #
-sub new
-{
-    my($obj, %args) = @_;
+sub new {
+    my ($obj, %args) = @_;
     my $class = ref($obj) || $obj;
-    my $self = {
-        _options => { %args },
-    };
+    my $self = {_options => {%args},};
 
     # If driver property specified, load "additional" modbus class (TCP / RTU)
-    if( exists $args{driver} && $args{driver} ne '' )
-    {
+    if (exists $args{driver} && $args{driver} ne '') {
         $class = "Protocol::Modbus::$args{driver}";
         eval "use $class";
-        if($@)
-        {
+        if ($@) {
             croak("Protocol::Modbus driver `$args{driver}' failed to load: $@");
-            return(undef);
+            return (undef);
         }
     }
 
@@ -97,42 +92,37 @@ sub new
 }
 
 # Build a read coils request
-sub readCoilsRequest
-{
-    my($self, %args) = @_;
+sub readCoilsRequest {
+    my ($self, %args) = @_;
     $args{function} = &Protocol::Modbus::FUNC_READ_COILS;
     return $self->request(%args);
 }
 
-sub readInputsRequest
-{
-    my($self, %args) = @_;
+sub readInputsRequest {
+    my ($self, %args) = @_;
     $args{function} = &Protocol::Modbus::FUNC_READ_INPUTS;
     return $self->request(%args);
 }
 
-sub readHoldRegistersRequest
-{
-    my($self, %args) = @_;
+sub readHoldRegistersRequest {
+    my ($self, %args) = @_;
     $args{function} = &Protocol::Modbus::FUNC_READ_HOLD_REGISTERS;
     return $self->request(%args);
 }
 
-sub writeCoilRequest
-{
-    my($self, %args) = @_;
+sub writeCoilRequest {
+    my ($self, %args) = @_;
     $args{function} = &Protocol::Modbus::FUNC_WRITE_COIL;
 
     # The only allowed values are 0x0000 and 0xFF00
-    if( ! exists $args{value} )
-    {
+    if (!exists $args{value}) {
         return throw Protocol::Modbus::Exception(
             function => $args{function},
             code     => &Protocol::Modbus::Exception::ILLEGAL_DATA_VALUE
         );
     }
-    elsif( $args{value} != 0 )
-    {
+    elsif ($args{value} != 0) {
+
         # Don't throw exception, auto-convert value (it's more perlish)
         #
         #    return throw Protocol::Modbus::Exception(
@@ -146,13 +136,11 @@ sub writeCoilRequest
     return $self->request(%args);
 }
 
-sub writeRegisterRequest
-{
-    my($self, %args) = @_;
+sub writeRegisterRequest {
+    my ($self, %args) = @_;
     $args{function} = &Protocol::Modbus::FUNC_WRITE_REGISTER;
 
-    if( ! exists $args{value} )
-    {
+    if (!exists $args{value}) {
         return throw Protocol::Modbus::Exception(
             function => $args{function},
             code     => &Protocol::Modbus::Exception::ILLEGAL_DATA_VALUE
@@ -161,40 +149,35 @@ sub writeRegisterRequest
     return $self->request(%args);
 }
 
-sub close
-{
-    my $self = $_[0];
+sub close {
+    my $self      = $_[0];
     my $transport = $self->transport;
-    my $ok = 1;
-    if( $self->transport->connected() )
-    {
-        $ok = $self->transport->disconnect()
+    my $ok        = 1;
+    if ($self->transport->connected()) {
+        $ok = $self->transport->disconnect();
     }
-    return($ok);
+    return ($ok);
 }
 
 # "Pure" Modbus protocol doesn't need to add anything to requests
-sub processBeforeSend
-{
-    my($self, $req) = @_;
+sub processBeforeSend {
+    my ($self, $req) = @_;
+
     # noop
-    return($req);
+    return ($req);
 }
 
-sub processAfterReceive
-{
-    my($self, $res) = @_;
-    return($res);
+sub processAfterReceive {
+    my ($self, $res) = @_;
+    return ($res);
 }
 
 # Build a generic request
-sub request
-{
-    my($self, %req_params) = @_;
-    if( ! exists $req_params{function} )
-    {
+sub request {
+    my ($self, %req_params) = @_;
+    if (!exists $req_params{function}) {
         croak('Invalid request() called without \'function\' parameter');
-        return(undef);
+        return (undef);
     }
 
     my $req = Protocol::Modbus::Request->new(%req_params);
@@ -202,12 +185,11 @@ sub request
     # Add header and trailer (for TCP/RTU protocol flavours)
     $self->processBeforeSend($req);
 
-    return($req);
+    return ($req);
 }
 
-sub parseResponse
-{
-    my($self, $res) = @_;
+sub parseResponse {
+    my ($self, $res) = @_;
 
     # Response at this stage is only initialized with raw frame
     # that came from transport layer
@@ -217,63 +199,59 @@ sub parseResponse
     $res = $self->processAfterReceive($res);
 
     # Invalid response!
-    if( ! $res )
-    {
+    if (!$res) {
         warn('Received invalid response. Protocol layer refused data.');
-        return(undef);
+        return (undef);
     }
 
     # Invalid PDU?
-    if( ! $res->pdu() )
-    {
+    if (!$res->pdu()) {
         warn('Invalid Modbus PDU!');
-        return(undef);
+        return (undef);
     }
 
     # Ok, valid PDU. Process the response.
-    return($res->process());
+    return ($res->process());
 }
 
-sub transaction
-{
-    my($self, $trs, $req) = @_;
+sub transaction {
+    my ($self, $trs, $req) = @_;
     my $oXact;
 
-    if( ! exists $self->{_transaction} || ! $self->{_transaction} )
-    {
+    if (!exists $self->{_transaction} || !$self->{_transaction}) {
+
         # Set transport object
         $self->transport($trs);
 
         # Create a new transaction
         #$self->{_transaction} =
         $oXact = Protocol::Modbus::Transaction->new(
-            protocol => $self,
-            transport=> $trs,
-            request  => $req,
+            protocol  => $self,
+            transport => $trs,
+            request   => $req,
         );
+
         #warn('Create new transaction (id=', $oXact->id(), ')');
         #$self->{_transaction} = $oXact;
     }
-    else
-    {
+    else {
+
         # Return the last generated transaction
         $oXact = $self->{_transaction};
     }
 
-    return($oXact);
+    return ($oXact);
 }
 
-sub transport
-{
+sub transport {
     my $self = shift;
     if (@_) {
         $self->{_options}->{transport} = $_[0];
     }
-    return($self->{_options}->{transport});
+    return ($self->{_options}->{transport});
 }
 
-sub options
-{
+sub options {
     my $self = $_[0];
     return $self->{_options};
 }

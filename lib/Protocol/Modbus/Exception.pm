@@ -14,31 +14,27 @@ use constant SERVER_BUSY           => 0x06;
 use constant GATEWAY_PROBLEM1      => 0x0A;
 use constant GATEWAY_PROBLEM2      => 0x0B;
 
-sub new
-{
-    my($obj, %args) = @_;
+sub new {
+    my ($obj, %args) = @_;
     my $class = ref($obj) || $obj;
-    my $self = { %args };
+    my $self = {%args};
     bless $self, $class;
 }
 
 # Fallback on 'new()'
 *throw = *new;
 
-sub code
-{
+sub code {
     my $self = $_[0];
     return $self->{code};
 }
 
-sub function
-{
+sub function {
     my $self = $_[0];
     return $self->{function};
 }
 
-sub stringify
-{
+sub stringify {
     my $self = $_[0];
     return sprintf('Modbus Exception (func=%s, code=%s)', $self->function, $self->code);
 }

@@ -10,121 +10,107 @@ use Protocol::Modbus::Response;
 # Define a progressive id
 $Protocol::Modbus::Transaction::ID = 0;
 
-sub new
-{
-    my($obj, %args) = @_;
+sub new {
+    my ($obj, %args) = @_;
     my $class = ref($obj) || $obj;
     my $self = {
-        _request => $args{request},
-        _response=> $args{response},
-        _protocol=> $args{protocol},
-        _transport=>$args{transport},
-        _id      => Protocol::Modbus::Transaction::nextId(),
+        _request   => $args{request},
+        _response  => $args{response},
+        _protocol  => $args{protocol},
+        _transport => $args{transport},
+        _id        => Protocol::Modbus::Transaction::nextId(),
     };
     bless $self, $class;
 }
 
 # Get/set protocol class (Pure modbus or TCP modbus)
-sub protocol
-{
+sub protocol {
     my $self = shift;
-    if( @_ )
-    {
+    if (@_) {
         $self->{_protocol} = $_[0];
     }
     return $self->{_protocol};
 }
 
 # Transport object (TCP or Serial)
-sub transport
-{
+sub transport {
     my $self = shift;
-    if( @_ )
-    {
+    if (@_) {
         $self->{_transport} = $_[0];
     }
     return $self->{_transport};
 }
 
-sub close
-{
+sub close {
     my $self = $_[0];
     $self->transport->disconnect();
     $self->request(undef);
     $self->response(undef);
 }
 
-sub execute
-{
+sub execute {
     my $self = $_[0];
-    my($req, $res);
+    my ($req, $res);
 
     # To execute a transaction, we must be connected
-    if( ! $self->transport->connect() )
-    {
+    if (!$self->transport->connect()) {
         croak('Modbus connection with server not available!');
-        return(undef);
+        return (undef);
     }
 
     # We must have a request object
-    if( ! ($req = $self->request()) )
-    {
+    if (!($req = $self->request())) {
         croak('Modbus transaction without request is not possible!');
-        return(undef);
+        return (undef);
     }
 
     # Send request
     $self->transport->send($req);
+
     #warn('Sent [', $req, '] request object');
 
     # Get a response
     my $raw_data = $self->transport->receive($req);
+
     #warn('Received [', uc unpack('H*', $raw_data), '] data');
 
     # Init a response object with the data received by transport
-    $res = Protocol::Modbus::Response->new( frame => $raw_data );
+    $res = Protocol::Modbus::Response->new(frame => $raw_data);
 
     # Protocol (TCP/RTU) should now parse the response
-    return($self->protocol->parseResponse($res));
+    return ($self->protocol->parseResponse($res));
 
 }
 
-sub id
-{
+sub id {
     my $self = $_[0];
     return $self->{_id};
 }
 
-sub nextId
-{
-    return($Protocol::Modbus::Transaction::ID++);
+sub nextId {
+    return ($Protocol::Modbus::Transaction::ID++);
 }
 
 # Get/set request class
-sub request
-{
+sub request {
     my $self = shift;
-    if( @_ )
-    {
+    if (@_) {
         $self->{_request} = $_[0];
     }
     return $self->{_request};
 }
 
 # Get/set response class
-sub response
-{
+sub response {
     my $self = shift;
-    if( @_ )
-    {
+    if (@_) {
         $self->{_request} = $_[0];
     }
     return $self->{_request};
 }
 
 # TODO Convert transaction to string
-sub stringify
-{
+sub stringify {
     my $self = $_[0];
     return 'TRANSACTION_STRING';
 }
