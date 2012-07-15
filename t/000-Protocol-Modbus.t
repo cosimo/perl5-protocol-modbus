@@ -7,7 +7,9 @@ use Protocol::Modbus::Response;
 use Protocol::Modbus::TCP;
 use Protocol::Modbus::Transaction;
 use Protocol::Modbus::Transport;
-use Protocol::Modbus::Transport::Serial;
+## Avoid forced dependency on Device::SerialPort
+## if you don't use it.
+#use Protocol::Modbus::Transport::Serial;
 use Protocol::Modbus::Transport::TCP;
 
 ok(1);

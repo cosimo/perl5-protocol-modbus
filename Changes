@@ -1,5 +1,9 @@
 Revision history for Perl extension Protocol::Modbus.
 
+0.09  Sun Jul 15 11:34:42 CEST 2012
+    - Removed loading of Serial driver to avoid forced dependency
+      on Device::SerialPort
+
 0.08  Sat Jul 14 17:29:51 CEST 2012
     - Properly updated the Changes file for 0.07 too.
       No other significant change. Perltidied all files.
