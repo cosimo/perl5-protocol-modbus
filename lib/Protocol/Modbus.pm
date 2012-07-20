@@ -345,11 +345,15 @@ I wouldn't be surprised if it doesn't work for you out-of-the-box.
 
 =head1 SEE ALSO
 
-=over *
+=over 4
 
-=item Device::PLC
+=item *
 
-=item http://www.modbus-ida.com
+L<Device::PLC>
+
+=item *
+
+L<http://www.modbus.org>
 
 =back
 
