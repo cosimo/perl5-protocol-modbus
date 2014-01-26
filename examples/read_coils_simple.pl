@@ -8,7 +8,6 @@
 #
 # Cosimo  Feb 1st, 2007
 #
-# $Id: read_coils_simple.pl,v 1.2 2007/02/05 11:16:02 cosimo Exp $
 
 use strict;
 use warnings;

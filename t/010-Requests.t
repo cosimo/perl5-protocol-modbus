@@ -4,7 +4,6 @@
 #
 # 2007/01/30 Cosimo Streppone <cosimo@cpan.org>
 #
-# $Id: 010-Requests.t,v 1.2 2007/02/05 11:16:03 cosimo Exp $
 
 use strict;
 use warnings;

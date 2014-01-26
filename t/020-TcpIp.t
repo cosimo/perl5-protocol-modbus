@@ -1,8 +1,6 @@
 #
 # Modbus/TCP-IP core tests
 #
-# $Id: 020-TcpIp.t,v 1.3 2007/02/16 10:51:21 cosimo Exp $
-#
 
 use Test::More;
 

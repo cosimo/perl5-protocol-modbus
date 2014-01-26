@@ -1,5 +1,3 @@
-# $Id: RTU.pm,v 1.2 2007/08/25 19:58:42 cosimo Exp $
-
 package Protocol::Modbus::RTU;
 $VERSION = 1.00;
 

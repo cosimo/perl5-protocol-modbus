@@ -7,7 +7,6 @@
 #
 # Cosimo  Feb 5st, 2007
 #
-# $Id: read_inputs_full_api.pl,v 1.1 2007/02/09 10:46:49 cosimo Exp $
 
 use strict;
 use warnings;

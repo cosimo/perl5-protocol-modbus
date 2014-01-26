@@ -1,5 +1,3 @@
-# $Id: Serial.pm,v 1.1 2007/02/09 10:46:49 cosimo Exp $
-
 package Protocol::Modbus::Transport::Serial;
 
 use strict;

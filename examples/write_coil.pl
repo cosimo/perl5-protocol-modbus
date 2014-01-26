@@ -5,7 +5,6 @@
 #
 # Cosimo  Feb 5st, 2007
 #
-# $Id: write_coil.pl,v 1.3 2007/02/16 15:02:26 cosimo Exp $
 
 use strict;
 use warnings;
