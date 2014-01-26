@@ -1,5 +1,3 @@
-# $Id$
-
 package Protocol::Modbus::Transport::TCP;
 
 use strict;
@@ -66,7 +64,7 @@ sub receive {
     # Get socket
     my $sock = $self->{_handle};
 
-    $sock->recv(my $data, 100);
+    $sock->recv(my $data, 256);
 
     #warn('Received: [' . unpack('H*', $data) . ']');
 
