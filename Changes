@@ -1,5 +1,10 @@
 Revision history for Perl extension Protocol::Modbus.
 
+0.10  Sun Jan 26 12:05:01 CET 2014
+
+    - RT#81115: Make sure we have a receive buffer big enough to get
+      the max size of modbus frame via TCP/IP. Thanks to Martin Nørdby Nielsen.
+
 0.09  Sun Jul 15 11:34:42 CEST 2012
     - Removed loading of Serial driver to avoid forced dependency
       on Device::SerialPort
